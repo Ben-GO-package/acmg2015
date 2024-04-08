@@ -5,9 +5,9 @@ import (
 	"os"
 	"regexp"
 
-	"github.com/liserjrqlxue/acmg2015/evidence"
+	"github.com/Ben-GO-package/acmg2015/evidence"
 
-	"github.com/liserjrqlxue/simple-util"
+	simple_util "github.com/liserjrqlxue/simple-util"
 )
 
 var (

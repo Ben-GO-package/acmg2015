@@ -1,11 +1,10 @@
 package acmg2015
 
 import (
+	"github.com/Ben-GO-package/acmg2015/evidence"
 	"github.com/brentp/bix"
 	"github.com/liserjrqlxue/goUtil/jsonUtil"
 	"github.com/liserjrqlxue/goUtil/simpleUtil"
-
-	"github.com/liserjrqlxue/acmg2015/evidence"
 )
 
 var (

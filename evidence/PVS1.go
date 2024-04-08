@@ -1,14 +1,15 @@
 package evidence
 
 import (
-	"github.com/brentp/bix"
-	"github.com/brentp/irelate/interfaces"
-	"github.com/liserjrqlxue/simple-util"
 	"io"
 	"log"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/brentp/bix"
+	"github.com/brentp/irelate/interfaces"
+	simple_util "github.com/liserjrqlxue/simple-util"
 )
 
 var PVS1AFThreshold = 0.05
