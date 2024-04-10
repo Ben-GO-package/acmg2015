@@ -21,7 +21,7 @@ func FindLOFIntoleranceGeneList(fileName, key string, pathogenicRegexp *regexp.R
 		if !pathogenicRegexp.MatchString(item[key]) {
 			continue
 		}
-		if FuncInfo[item["Function"]] < 3 {
+		if checkFuncInfo(item["Function"]) < 3 {
 			continue
 		}
 		if !CheckAFAllLowThen(item, PVS1AFlist, PVS1AFThreshold, true) {
@@ -42,7 +42,7 @@ var PVS1AFlist = []string{
 }
 
 func CheckPVS1(item map[string]string, LOFList map[string]int, transcriptInfo map[string][]Region, tbx *bix.Bix) string {
-	if FuncInfo[item["Function"]] < 3 {
+	if checkFuncInfo(item["Function"]) < 3 {
 		return "0"
 	}
 	if LOFList[item["Gene Symbol"]] == 0 {

@@ -6,17 +6,11 @@ import (
 	simple_util "github.com/liserjrqlxue/simple-util"
 )
 
-var BP3Func = map[string]bool{
-	"cds-del":   true,
-	"cds-ins":   true,
-	"cds-indel": true,
-}
-
 // ture	:	"1"
 // flase:	"0"
 func CheckBP3(item map[string]string) string {
-	if BP3Func[item["Function"]] && item["VarType"] != "snv" {
-		if item["RepeatTag"] == "" || item["RepeatTag"] == "." {
+	if isBP3Func.MatchString(item["Function"]) && item["VarType"] != "snv" {
+		if item["RepeatTag"] == "" || item["RepeatTag"] == "." || item["RepeatTag"] == "-" {
 			return "0"
 		} else {
 			if item["cHGVS_org"] == "" {

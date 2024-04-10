@@ -2,7 +2,7 @@ package evidence
 
 // PP2
 func CheckPP2(item map[string]string) string {
-	if item["Function"] != "missense" {
+	if !ismissense.MatchString(item["Function"]) {
 		return "0"
 	}
 	if pp2GeneList[item["Gene Symbol"]] {

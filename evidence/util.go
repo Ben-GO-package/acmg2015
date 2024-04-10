@@ -29,15 +29,16 @@ type Region struct {
 }
 
 var (
-	PM1Function  = regexp.MustCompile(`missense|cds-indel`)
-	getAAPos     = regexp.MustCompile(`^p\.[A-Z]\d+`)
-	IsClinVarPLP = regexp.MustCompile(`Pathogenic|Likely_pathogenic`)
-
-	IsHgmdDM = regexp.MustCompile(`DM$|DM\|`)
-
+	PM1Function    = regexp.MustCompile(`missense|cds-indel`)
+	isBP3Func      = regexp.MustCompile(`cds-del|cds-ins|cds-indel|inframe_deletion|inframe_insertion`)
+	isPM4Func      = regexp.MustCompile(`cds-del|cds-ins|cds-indel|stop-loss|inframe_deletion|inframe_insertion|stop_lost`)
+	getAAPos       = regexp.MustCompile(`^p\.[A-Z]\d+`)
+	IsClinVarPLP   = regexp.MustCompile(`Pathogenic|Likely_pathogenic`)
+	IsHgmdDM       = regexp.MustCompile(`DM$|DM\|`)
 	isARDRXLPRDDNA = regexp.MustCompile(`AR|DR|XL|PR|DD|NA|UNK`)
 	isADPDYL       = regexp.MustCompile(`AD|PD|YL`)
 	isSplice       = regexp.MustCompile(`splice`)
+	ismissense     = regexp.MustCompile(`missense`)
 	isSpliceIntron = regexp.MustCompile(`splice|intron`)
 	isSplice20     = regexp.MustCompile(`splice[+-]20`)
 	isP            = regexp.MustCompile(`P`)
@@ -47,6 +48,23 @@ var (
 	isDeleterious  = regexp.MustCompile(`deleterious`)
 	repeatSeq      = regexp.MustCompile(`c\..*\[(\d+)>\d+]`)
 )
+
+var chgvsReg = regexp.MustCompile(`c\.\d+([+-])(\d+)`)
+
+func get_distance(cHGVS string) int {
+	var matches = chgvsReg.FindStringSubmatch(cHGVS)
+	if matches != nil {
+		var distance = stringsUtil.Atoi(matches[2])
+		if distance <= 10 {
+			return 10
+		} else if distance <= 20 {
+			return 20
+		}
+	} else {
+		return 0
+	}
+	return 0
+}
 
 // Tier1 >1
 // LoF 3
@@ -70,6 +88,14 @@ var FuncInfo = map[string]int{
 	"splice+20":    1,
 }
 
+func checkFuncInfo(Function string) int {
+	var isFuncInfo = regexp.MustCompile(`splice-3|splice_acceptor_variant|splice-5|splice_donor_variant|init-loss|start_lost|alt-start|frameshift|nonsense|stop-gain|span`)
+	if isFuncInfo.MatchString(Function) {
+		return 3
+	} else {
+		return 1
+	}
+}
 func CheckAFAllLowThen(item map[string]string, AFlist []string, threshold float64, includeEqual bool) bool {
 	for _, key := range AFlist {
 		af := item[key]

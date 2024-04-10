@@ -15,7 +15,7 @@ func FindPathogenicMissense(fileName, key string, pathogenicRegexp *regexp.Regex
 		if !pathogenicRegexp.MatchString(item[key]) {
 			continue
 		}
-		if item["Function"] != "missense" {
+		if !ismissense.MatchString(item["Function"]) {
 			continue
 		}
 		var key = item["Transcript"] + ":" + item["pHGVS"]
@@ -31,7 +31,7 @@ func FindPathogenicMissense(fileName, key string, pathogenicRegexp *regexp.Regex
 
 // PS1
 func CheckPS1(item map[string]string) string {
-	if item["Function"] != "missense" {
+	if !ismissense.MatchString(item["Function"]) {
 		return "0"
 	}
 

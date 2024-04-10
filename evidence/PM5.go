@@ -2,7 +2,7 @@ package evidence
 
 // PM5
 func CheckPM5(item map[string]string) string {
-	if item["Function"] != "missense" {
+	if !ismissense.MatchString(item["Function"]) {
 		return "0"
 	}
 

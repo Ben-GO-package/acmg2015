@@ -9,7 +9,7 @@ func CheckBP4(item map[string]string) string {
 		return "0"
 	}
 	if isSpliceIntron.MatchString(item["Function"]) {
-		if isSplice.MatchString(item["Function"]) && !isSplice20.MatchString(item["Function"]) {
+		if isSplice.MatchString(item["Function"]) && get_distance(item["cHGVS"]) == 20 {
 			if isD.MatchString(item["dbscSNV_RF_pred"]) ||
 				isD.MatchString(item["dbscSNV_ADA_pred"]) ||
 				isD.MatchString(item["SpliceAI Pred"]) {

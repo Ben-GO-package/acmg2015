@@ -2,7 +2,7 @@ package evidence
 
 // BP1
 func CheckBP1(item map[string]string) string {
-	if item["Function"] != "missense" {
+	if !ismissense.MatchString(item["Function"]) {
 		return "0"
 	}
 	if bp1GeneList[item["Gene Symbol"]] {
