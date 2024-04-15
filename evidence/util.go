@@ -30,8 +30,8 @@ type Region struct {
 
 var (
 	PM1Function    = regexp.MustCompile(`missense|cds-indel`)
-	isBP3Func      = regexp.MustCompile(`cds-del|cds-ins|cds-indel|inframe_deletion|inframe_insertion`)
-	isPM4Func      = regexp.MustCompile(`cds-del|cds-ins|cds-indel|stop-loss|inframe_deletion|inframe_insertion|stop_lost`)
+	isBP3Func      = regexp.MustCompile(`cds-del|cds-ins|cds-indel|inframe_deletion|inframe_insertion|protein_altering_variant`)
+	isPM4Func      = regexp.MustCompile(`cds-del|cds-ins|cds-indel|stop-loss|inframe_deletion|inframe_insertion|stop_lost|protein_altering_variant`)
 	getAAPos       = regexp.MustCompile(`^p\.[A-Z]\d+`)
 	IsClinVarPLP   = regexp.MustCompile(`Pathogenic|Likely_pathogenic`)
 	IsHgmdDM       = regexp.MustCompile(`DM$|DM\|`)
@@ -53,19 +53,16 @@ var (
 
 var chgvsReg = regexp.MustCompile(`c\.\d+([+-])(\d+)`)
 
-func get_distance(cHGVS string) int {
-	var matches = chgvsReg.FindStringSubmatch(cHGVS)
-	if matches != nil {
-		var distance = stringsUtil.Atoi(matches[2])
-		if distance <= 10 {
-			return 10
-		} else if distance <= 20 {
-			return 20
-		}
-	} else {
+func get_abs(input string) int {
+	if input == "-" {
 		return 0
 	}
-	return 0
+	input_int, _ := strconv.Atoi(input)
+	if input_int < 0 {
+		return -input_int
+	} else {
+		return input_int
+	}
 }
 
 // Tier1 >1

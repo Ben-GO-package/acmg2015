@@ -19,16 +19,18 @@ func CheckBP4(item map[string]string) string {
 		}
 		return "0"
 	} else if isIntron.MatchString(item["Function"]) {
-		if get_distance(item["cHGVS"]) != 20 {
-			if isD.MatchString(item["dbscSNV_RF_pred"]) ||
-				isD.MatchString(item["dbscSNV_ADA_pred"]) ||
-				isD.MatchString(item["SpliceAI Pred"]) {
+		if get_abs(item["HGVS_IntronStartOffset"]) > 0 || get_abs(item["HGVS_IntronEndOffset"]) > 0 {
+			if get_abs(item["HGVS_IntronStartOffset"]) > 0 && get_abs(item["HGVS_IntronStartOffset"]) <= 10 {
+				if isD.MatchString(item["dbscSNV_RF_pred"]) ||
+					isD.MatchString(item["dbscSNV_ADA_pred"]) ||
+					isD.MatchString(item["SpliceAI Pred"]) {
+					return "0"
+				}
+				if isP.MatchString(item["SpliceAI Pred"]) {
+					return "1"
+				}
 				return "0"
 			}
-			if isP.MatchString(item["SpliceAI Pred"]) {
-				return "1"
-			}
-			return "0"
 		}
 	} else {
 		if isP.MatchString(item["SIFT Pred"]) &&
