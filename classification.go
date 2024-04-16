@@ -1,7 +1,7 @@
 package acmg2015
 
 // output B LB VUS LP P
-func PredACMG2015(item map[string]string, autoPVS1 bool) string {
+func PredACMG2015(item map[string]string, autoPVS1 bool, runPM1 bool) string {
 
 	PVS1 := item["PVS1"]
 
@@ -9,8 +9,10 @@ func PredACMG2015(item map[string]string, autoPVS1 bool) string {
 	PS2 := item["PS2"]
 	PS3 := item["PS3"]
 	PS4 := item["PS4"]
-
-	PM1 := item["PM1"]
+	PM1 := "0"
+	if runPM1 {
+		PM1 = item["PM1"]
+	}
 	PM2 := item["PM2"]
 	PM3 := item["PM3"]
 	PM4 := item["PM4"]

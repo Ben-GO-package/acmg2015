@@ -8,20 +8,18 @@ import (
 )
 
 var (
-	AutoPVS1 bool
-)
-
-var (
 	tbx            *bix.Bix
-	lofList        map[string]int
+	LOFGeneList    map[string]int
 	transcriptInfo map[string][]evidence.Region
 )
 
-func Init(cfg map[string]string) {
+func Init(cfg map[string]string, AutoPVS1 bool, runPM1 bool) {
 	evidence.LoadPS1PM5(cfg["PS1PM5.MutationName.count"], cfg["PS1PM5.pHGVS1.count"], cfg["PS1PM5.AApos.count"])
-	evidence.LoadPM1(cfg["PM1InterproDomain"], cfg["PM1PfamIdDomain"])
+	if runPM1 {
+		evidence.LoadPM1(cfg["PM1InterproDomain"], cfg["PM1PfamIdDomain"])
+	}
 	if !AutoPVS1 {
-		jsonUtil.JsonFile2Data(cfg["LOFList"], &lofList)
+		LOFGeneList = evidence.LoadLOF(cfg["LOFList"])
 		jsonUtil.JsonFile2Data(cfg["transcriptInfo"], &transcriptInfo)
 	}
 	tbx = simpleUtil.HandleError(bix.New(cfg["PathogenicLite"])).(*bix.Bix)
@@ -31,14 +29,16 @@ func Init(cfg map[string]string) {
 	evidence.LoadBA1(cfg["BA1ExceptionList"])
 }
 
-func AddEvidences(item map[string]string) {
+func AddEvidences(item map[string]string, AutoPVS1 bool, runPM1 bool) {
 	if !AutoPVS1 {
-		item["PVS1"] = evidence.CheckPVS1(item, lofList, transcriptInfo, tbx)
+		item["PVS1"] = evidence.CheckPVS1(item, LOFGeneList, transcriptInfo, tbx)
 	}
 	item["PS1"] = evidence.CheckPS1(item)
 	item["PM5"] = evidence.CheckPM5(item)
 	item["PS4"] = evidence.CheckPS4(item)
-	item["PM1"] = evidence.CheckPM1(item, tbx)
+	if runPM1 {
+		item["PM1"] = evidence.CheckPM1(item, tbx)
+	}
 	item["PM2"] = evidence.CheckPM2(item)
 	item["PM4"] = evidence.CheckPM4(item)
 	item["PP2"] = evidence.CheckPP2(item)

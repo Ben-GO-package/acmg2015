@@ -40,11 +40,14 @@ ATP6:p.L5	1
 将HGMD和ClinVar数据库的missense和仅导致相同个数氨基酸替换的cds-indel变异通过dbNSFP和pfam蛋白预测区段注释得到对应的蛋白结构域信息
 
 ## LOFList
-基因功能缺失（LOF）是致病机制的基因list清单。json格式:
-```json
-"A2ML1": 1,
+基因功能缺失（LOF）是致病机制的基因list清单。
+数据库配置未见格式如下，流程使用文件的**第二列** `entrez_id` 进行处理
 ```
-
+HGNC	entrez_id
+AAGAB	79719
+ABCA7	10347
+ADAM9	8754
+```
 
 ## transcriptInfo
 记录了转录本的染色体起始终止，和正负链信息，用来确认PathogenicLite记录的相关变异和目标变异的关系
@@ -79,7 +82,13 @@ b. 对于某一个基因，统计致病变异数和良性变异数。
 c. 若该基因的致病变异集（致病变异数≥10）中≥80%是missense；且该基因的良性变异集（不做数目要求）中≤10%的是missense，则生成一个基因集。
 ```
 将基因集A和基因集B合并（并集）得到最终的PP2基因集("PP2GeneList")。
-
+数据库配置未见格式如下，流程使用文件的**第二列** `entrez_id` 进行处理
+```
+HGNC	entrez_id
+AAGAB	79719
+ABCA7	10347
+ADAM9	8754
+```
 ## LateOnset
 参考OMIM等总结外显不全或晚发疾病集，确定相关基因集。
 ```
@@ -87,13 +96,25 @@ A2M
 AAGAB
 AARS
 ```
-
+数据库配置未见格式如下，流程使用文件的**第二列** `entrez_id` 进行处理
+```
+HGNC	entrez_id
+AAGAB	79719
+ABCA7	10347
+ADAM9	8754
+```
 ## BP1GeneList
 1. 将ClinVar和HGMD的所有变异合并后去重；
 2. 对于某一个基因，统计致病变异数；
 `说明1：致病变异：指ClinVar收录为pathogenic、likely pathogenic、pathogenic/likely pathogenic但HGMD无DP、FP、DFP的变异，或Clinvar无致病性收录但HGMD收录为DM的变异；`
 3. 若该基因的致病变异集（致病变异数≥10）中≥80%是LOF（splice-3, splice-5, init-loss, alt-start, frameshift, nonsense, stop-gain，span）；则生成一个基因集 `BP1GeneList`。
-
+数据库配置未见格式如下，流程使用文件的**第二列** `entrez_id` 进行处理
+```
+HGNC	entrez_id
+AAGAB	79719
+ABCA7	10347
+ADAM9	8754
+```
 ## BA1ExceptionList
 不适用BA1规则的突变列表。
 ```

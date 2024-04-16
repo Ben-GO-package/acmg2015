@@ -27,7 +27,7 @@ func FindLOFIntoleranceGeneList(fileName, key string, pathogenicRegexp *regexp.R
 		if !CheckAFAllLowThen(item, PVS1AFlist, PVS1AFThreshold, true) {
 			continue
 		}
-		geneList[item["Gene Symbol"]]++
+		geneList[item["entrez_id"]]++
 	}
 	return geneList
 }
@@ -45,7 +45,7 @@ func CheckPVS1(item map[string]string, LOFList map[string]int, transcriptInfo ma
 	if checkFuncInfo(item["Function"]) < 3 {
 		return "0"
 	}
-	if LOFList[item["Gene Symbol"]] == 0 {
+	if LOFList[item["entrez_id"]] == 0 {
 		return "0"
 	}
 	if CheckDomain(item) {
@@ -57,7 +57,7 @@ func CheckPVS1(item map[string]string, LOFList map[string]int, transcriptInfo ma
 			return "1"
 		}
 	} else {
-		log.Printf("Transcript(%s)of Gene(%s) not in transcriptInfo\n", item["Transcript"], item["Gene Symbol"])
+		log.Printf("Transcript(%s)of Gene(%s) not in transcriptInfo\n", item["Transcript"], item["entrez_id"])
 	}
 
 	return "0"
@@ -69,7 +69,7 @@ func ComparePVS1(item map[string]string, LOFList map[string]int, transcriptInfo 
 	if val != item[rule] {
 		if item[rule] == "0" && val == "" {
 		} else {
-			PrintConflict(item, rule, val, "Function", "Gene Symbol")
+			PrintConflict(item, rule, val, "Function", "entrez_id")
 		}
 	}
 }

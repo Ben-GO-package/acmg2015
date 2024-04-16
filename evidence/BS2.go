@@ -33,7 +33,7 @@ func CheckBS2(item map[string]string) string {
 		} else {
 			c = 0
 		}
-		if bs2GeneList[item["Gene Symbol"]] {
+		if bs2GeneList[item["entrez_id"]] {
 			if c >= BS2LateOnsetHomoThreshold {
 				return "1"
 			}
@@ -63,6 +63,6 @@ func CompareBS2(item map[string]string) {
 	rule := "BS2"
 	val := CheckBS2(item)
 	if val != item[rule] {
-		PrintConflict(item, rule, val, append([]string{"Gene Symbol", "ModeInheritance"}, append(BS2HomoList, BS2AF1List...)...)...)
+		PrintConflict(item, rule, val, append([]string{"entrez_id", "ModeInheritance"}, append(BS2HomoList, BS2AF1List...)...)...)
 	}
 }

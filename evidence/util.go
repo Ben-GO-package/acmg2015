@@ -141,6 +141,7 @@ var (
 	bs2GeneList       = make(map[string]bool)
 	ba1Exception      = make(map[string]bool)
 	pp2GeneList       = make(map[string]bool)
+	LOFGeneList       = make(map[string]int)
 )
 
 func LoadPS1PM5(hgvs, pHgvs, aaPos string) {
@@ -202,31 +203,39 @@ func countBix(tbx *bix.Bix, chr string, start, end int) (n int) {
 	return n
 }
 
+func LoadLOF(LOFGeneListFile string) map[string]int {
+	for _, line := range textUtil.File2Array(LOFGeneListFile) {
+		array := strings.Split(line, "\t")
+		LOFGeneList[array[1]] = stringsUtil.Atoi(array[1])
+	}
+	return LOFGeneList
+}
+
 func LoadBP1(bp1geneList string) {
 	var genes = textUtil.File2Array(bp1geneList)
 	bp1GeneList = make(map[string]bool)
-	for _, gene := range genes {
-		bp1GeneList[gene] = true
+	for _, line := range genes {
+		array := strings.Split(line, "\t")
+		bp1GeneList[array[1]] = true
 	}
 }
 
 func LoadBS2(fileName string) {
-	for _, key := range textUtil.File2Array(fileName) {
-		bs2GeneList[key] = true
+	for _, line := range textUtil.File2Array(fileName) {
+		array := strings.Split(line, "\t")
+		bs2GeneList[array[1]] = true
+	}
+}
+
+func LoadPP2(fileName string) {
+	for _, line := range textUtil.File2Array(fileName) {
+		array := strings.Split(line, "\t")
+		pp2GeneList[array[1]] = true
 	}
 }
 
 func LoadBA1(fileName string) {
 	for _, key := range textUtil.File2Array(fileName) {
 		ba1Exception[key] = true
-	}
-	return
-}
-
-func LoadPP2(pp2geneList string) {
-	var genes = textUtil.File2Array(pp2geneList)
-	pp2GeneList = make(map[string]bool)
-	for _, gene := range genes {
-		pp2GeneList[gene] = true
 	}
 }
